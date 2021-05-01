@@ -1,0 +1,30 @@
+{
+  "name": "iic3103_t2_api",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "https://github.com/asimonv/iic3103_t2_api.git",
+  "author": "asimonv <aasimon@uc.cl>",
+  "license": "MIT",
+  "scripts": {
+    "start": "babel-node index.js",
+    "test": "node test.js",
+    "migrate": "./node_modules/.bin/sequelize db:migrate",
+    "lint-fix": "./node_modules/.bin/eslint --fix src/**/*.js"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.0",
+    "@babel/preset-env": "^7.14.0",
+    "@babel/register": "^7.13.16",
+    "dotenv": "^8.2.0",
+    "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^10.0.0",
+    "pg": "^8.6.0",
+    "sequelize": "^6.6.2"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.2.0"
+  }
+}
