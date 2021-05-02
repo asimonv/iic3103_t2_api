@@ -18,6 +18,10 @@ const config = {
   },
   production: {
     extend: "default",
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
     // use_env_variable: 'HEROKU_POSTGRESQL_IVORY_URL',
   },
 };
