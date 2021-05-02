@@ -9,10 +9,7 @@ const config = {
     host: process.env.DB_HOST || "127.0.0.1",
   },
   development: {
-    username: process.env.DB_DEV_USERNAME,
-    password: process.env.DB_DEV_PASSWORD,
-    dialect: "postgres",
-    host: "127.0.0.1",
+    extend: "default",
     database: "iic3103_dev",
   },
   test: {
