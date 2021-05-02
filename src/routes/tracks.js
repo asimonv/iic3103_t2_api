@@ -28,29 +28,32 @@ router.get("tracks", "/", async ctx => {
   }
 });
 
-router.post("createTrack", "/", async => {
+router.post("createTrack", "/", async ctx => {
   const {
     state: { album },
-    request: { body: { name }, body }
+    request: {
+      body: { name },
+      body,
+    },
   } = ctx;
 
   if (!album) {
-    ctx.status = 422; 
+    ctx.status = 422;
   } else {
-    const track = await album.getTracks({ where: { name }})[0];
-      if (track) {
-        ctx.body = track
-        ctx.status = 409
-      } else {
-        try {
-          const { id: albumId } = album;
-          const id = btoa(`${name}:${albumId}`).slice(0, 22);
-          ctx.status = 201;
-          ctx.body = await ctx.orm.Tracks.create({ ...body, id });
-        } catch (error) {
-          ctx.status = 400;
-        }
+    const track = await album.getTracks({ where: { name } })[0];
+    if (track) {
+      ctx.body = track;
+      ctx.status = 409;
+    } else {
+      try {
+        const { id: albumId } = album;
+        const id = btoa(`${name}:${albumId}`).slice(0, 22);
+        ctx.status = 201;
+        ctx.body = await ctx.orm.Tracks.create({ ...body, id });
+      } catch (error) {
+        ctx.status = 400;
       }
+    }
   }
 });
 
@@ -72,7 +75,6 @@ router.put("playTrack", "/:trackId/play", loadTrack, async ctx => {
     ctx.state = 200;
   }
 });
-
 
 router.put("playAlbumTracks", "/play", async ctx => {
   const {

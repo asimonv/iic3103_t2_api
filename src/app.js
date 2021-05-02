@@ -34,4 +34,9 @@ app.use(
 // Routing middleware
 app.use(routes.routes());
 
+app.use((ctx, next) => {
+  ctx.status = 455;
+  return next();
+});
+
 module.exports = app;

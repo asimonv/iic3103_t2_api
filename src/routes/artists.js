@@ -63,7 +63,7 @@ router.delete("deleteArtist", "/:artistId", loadArtist, async ctx => {
   } else {
     try {
       await artist.destroy();
-      ctx.status = 201;
+      ctx.status = 204;
     } catch (error) {
       ctx.body = error;
     }
