@@ -86,7 +86,18 @@ router.put("playAllAlbumTracks", "/play", async ctx => {
   if (!artist) {
     ctx.status = 404;
   } else {
-    ctx.state = 200;
+    try {
+      const albums = await artist.getAlbums();
+      for (let i = 0; i < albums.length; i++) {
+        const { id: albumId } = albums[i];
+        await ctx.orm.Tracks.increment("times_played", {
+          where: { album_id: albumId },
+        });
+      }
+      ctx.state = 200;
+    } catch (error) {
+      ctx.body = error;
+    }
   }
 });
 

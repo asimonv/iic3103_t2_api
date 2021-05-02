@@ -38,7 +38,7 @@ router.post("createArtist", "/", async ctx => {
     where: {
       [Op.or]: [{ id }, { name }],
     },
-  });
+  })[0];
 
   if (artist) {
     ctx.status = 409;
