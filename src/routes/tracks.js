@@ -61,4 +61,45 @@ router.get("track", "/:trackId", loadTrack, async ctx => {
   ctx.body = track;
 });
 
+router.put("playTrack", "/:trackId/play", loadTrack, async ctx => {
+  const {
+    state: { track },
+  } = ctx;
+
+  if (!track) {
+    ctx.status = 404;
+  } else {
+    ctx.state = 200;
+  }
+});
+
+
+router.put("playAlbumTracks", "/play", async ctx => {
+  const {
+    state: { album },
+  } = ctx;
+
+  if (!album) {
+    ctx.status = 404;
+  } else {
+    ctx.state = 200;
+  }
+});
+
+router.delete("deleteTrack", "/:trackId", loadTrack, async ctx => {
+  const {
+    state: { track },
+  } = ctx;
+  if (!track) {
+    ctx.status = 404;
+  } else {
+    try {
+      await track.destroy();
+      ctx.status = 204;
+    } catch (error) {
+      ctx.body = error;
+    }
+  }
+});
+
 module.exports = router;

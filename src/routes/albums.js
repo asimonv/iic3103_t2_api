@@ -62,6 +62,34 @@ router.get("album", "/:albumId", loadAlbum, async ctx => {
   ctx.body = album;
 });
 
+router.delete("deleteAlbum", "/:albumId", loadAlbum, async ctx => {
+  const {
+    state: { album },
+  } = ctx;
+  if (!album) {
+    ctx.status = 404;
+  } else {
+    try {
+      await album.destroy();
+      ctx.status = 204;
+    } catch (error) {
+      ctx.body = error;
+    }
+  }
+});
+
+router.put("playAllAlbumTracks", "/play", async ctx => {
+  const {
+    state: { artist },
+  } = ctx;
+
+  if (!artist) {
+    ctx.status = 404;
+  } else {
+    ctx.state = 200;
+  }
+});
+
 router.use("/:albumId/tracks", loadAlbum, tracksRouter.routes());
 
 module.exports = router;
