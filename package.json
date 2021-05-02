@@ -6,7 +6,8 @@
   "author": "asimonv <aasimon@uc.cl>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --exec babel-node index.js",
+    "start": "babel-node index.js",
+    "nodemon": "nodemon --exec babel-node index.js",
     "test": "node test.js",
     "migrate": "./node_modules/.bin/sequelize db:migrate",
     "lint-fix": "./node_modules/.bin/eslint --fix src/**/*.js"
