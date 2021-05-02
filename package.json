@@ -6,7 +6,7 @@
   "author": "asimonv <aasimon@uc.cl>",
   "license": "MIT",
   "scripts": {
-    "start": "babel-node index.js",
+    "start": "nodemon --exec babel-node index.js",
     "test": "node test.js",
     "migrate": "./node_modules/.bin/sequelize db:migrate",
     "lint-fix": "./node_modules/.bin/eslint --fix src/**/*.js"
@@ -16,7 +16,9 @@
     "@babel/core": "^7.14.0",
     "@babel/preset-env": "^7.14.0",
     "@babel/register": "^7.13.16",
+    "btoa": "^1.2.1",
     "dotenv": "^8.2.0",
+    "faker": "^5.5.3",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
     "koa-logger": "^3.2.1",
