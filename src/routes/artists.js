@@ -50,7 +50,6 @@ router.post("createArtist", "/", async ctx => {
       ctx.body = await ctx.orm.Artists.create({ ...body, id });
     } catch (error) {
       ctx.status = 400;
-      ctx.body = "input inválido";
     }
   }
 });
@@ -61,12 +60,10 @@ router.delete("deleteArtist", "/:artistId", loadArtist, async ctx => {
   } = ctx;
   if (!artist) {
     ctx.status = 404;
-    ctx.body = "artista inexistente";
   } else {
     try {
       await artist.destroy();
       ctx.status = 201;
-      ctx.body = "artista eliminado";
     } catch (error) {
       ctx.body = error;
     }

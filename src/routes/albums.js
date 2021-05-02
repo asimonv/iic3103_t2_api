@@ -37,15 +37,13 @@ router.post("createAlbum", "/", async ctx => {
 
   if (!artist) {
     ctx.status = 422;
-    ctx.body = "artista no existe";
   } else {
     const album = await artist.getAlbums({ where: { name } });
     if (album) {
       ctx.status = 409;
-      ctx.body = "álbum ya existe";
     } else {
       try {
-        const { id: artistId };
+        const { id: artistId } = artist;
         const id = btoa(`${name}:${artistId}`).slice(0, 22);
 
         ctx.status = 201;
