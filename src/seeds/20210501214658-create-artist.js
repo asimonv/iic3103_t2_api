@@ -38,7 +38,8 @@ module.exports = {
         });
 
         for (let k = 0; k < 8; k++) {
-          const trackName = faker.lorem.sentence();
+          const r = Math.random().toString(36).substring(7);
+          const trackName = `${r} - ${faker.lorem.sentence()}`;
           const track_id = btoa(`${trackName}:${album_id}`).slice(0, 22);
           tracksData.push({
             id: track_id,
