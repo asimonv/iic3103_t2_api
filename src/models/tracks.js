@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       id: { type: DataTypes.STRING, noUpdate: true, primaryKey: true },
       album_id: DataTypes.STRING,
       name: DataTypes.STRING,
-      duration: DataTypes.DOUBLE,
+      duration: { type: DataTypes.DOUBLE, validate: { isDecimal: true } },
       times_played: DataTypes.INTEGER,
       artist: { type: DataTypes.STRING, noUpdate: true },
       album: { type: DataTypes.STRING, noUpdate: true },

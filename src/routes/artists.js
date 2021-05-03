@@ -36,7 +36,7 @@ router.get("artists", "/:artistId", loadArtist, async ctx => {
 router.post("createArtist", "/", async ctx => {
   const {
     request: {
-      body: { id, name },
+      body: { name },
       body,
     },
   } = ctx;

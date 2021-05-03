@@ -23,8 +23,12 @@ router.get("albums", "/", async ctx => {
     const artistAlbums = await artist.getAlbums();
     ctx.body = artistAlbums;
   } else {
-    const allAlbums = await ctx.orm.Albums.findAll();
-    ctx.body = allAlbums;
+    if (ctx.path === "/albums") {
+      const allAlbums = await ctx.orm.Albums.findAll();
+      ctx.body = allAlbums;
+    } else {
+      ctx.status = 404;
+    }
   }
 });
 

@@ -24,9 +24,11 @@ router.get("tracks", "/", async ctx => {
   } else if (album) {
     const albumTracks = await album.getTracks();
     ctx.body = albumTracks;
-  } else {
+  } else if (ctx.path === "/tracks") {
     const allTracks = await ctx.orm.Tracks.findAll();
     ctx.body = allTracks;
+  } else {
+    ctx.status = 404;
   }
 });
 
