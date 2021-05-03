@@ -5,6 +5,7 @@ const albumsRouter = require("./albums");
 const tracksRouter = require("./tracks");
 
 const router = new KoaRouter();
+const BASE_URL = "https://jumping-grasshopper-t2.herokuapp.com";
 
 async function loadArtist(ctx, next) {
   const {
@@ -24,7 +25,12 @@ router.get("artists", "/:artistId", loadArtist, async ctx => {
   const {
     state: { artist },
   } = ctx;
-  ctx.body = artist;
+  if (!artist) {
+    ctx.status = 404;
+  } else {
+    ctx.status = 200;
+    ctx.body = artist;
+  }
 });
 
 router.post("createArtist", "/", async ctx => {
@@ -35,19 +41,25 @@ router.post("createArtist", "/", async ctx => {
     },
   } = ctx;
   const artist = ctx.orm.Artists.findAll({
-    where: {
-      [Op.or]: [{ id }, { name }],
-    },
-  })[0];
+    where: { name },
+    limit: 1,
+  });
 
-  if (artist) {
+  if (artist.length) {
     ctx.status = 409;
-    ctx.body = artist;
+    ctx.body = artist[0];
   } else {
     try {
       const id = btoa(name).slice(0, 22);
+      const artistBody = {
+        ...body,
+        id,
+        albums: `${BASE_URL}/artists/${id}/albums`,
+        tracks: `${BASE_URL}/artists/${id}/tracks`,
+        self: `${BASE_URL}/artists/${id}`,
+      };
+      ctx.body = await ctx.orm.Artists.create(artistBody);
       ctx.status = 201;
-      ctx.body = await ctx.orm.Artists.create({ ...body, id });
     } catch (error) {
       ctx.status = 400;
     }

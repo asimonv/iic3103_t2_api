@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     const artistTracks = [];
     for (let i = 0; i < artistAlbums.length; i++) {
       const album = artistAlbums[i];
-      artistTracks.push(await album.getTracks());
+      artistTracks.push(...(await album.getTracks()));
     }
 
     return artistTracks;

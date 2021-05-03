@@ -1,6 +1,8 @@
+const btoa = require("btoa");
 const KoaRouter = require("koa-router");
 
 const router = new KoaRouter();
+const BASE_URL = "https://jumping-grasshopper-t2.herokuapp.com";
 
 async function loadTrack(ctx, next) {
   const {
@@ -40,16 +42,25 @@ router.post("createTrack", "/", async ctx => {
   if (!album) {
     ctx.status = 422;
   } else {
-    const track = await album.getTracks({ where: { name } })[0];
-    if (track) {
-      ctx.body = track;
+    const track = await album.getTracks({ where: { name }, limit: 1 });
+    if (track.length) {
+      ctx.body = track[0];
       ctx.status = 409;
     } else {
       try {
-        const { id: albumId } = album;
+        const { id: albumId, artist_id: artistId } = album;
         const id = btoa(`${name}:${albumId}`).slice(0, 22);
+        const trackBody = {
+          ...body,
+          id,
+          album_id: albumId,
+          artist: `${BASE_URL}/artists/${artistId}`,
+          album: `${BASE_URL}/albums/${albumId}`,
+          self: `${BASE_URL}/tracks/${id}`,
+        };
+
         ctx.status = 201;
-        ctx.body = await ctx.orm.Tracks.create({ ...body, id });
+        ctx.body = await ctx.orm.Tracks.create(trackBody);
       } catch (error) {
         ctx.status = 400;
       }
@@ -61,7 +72,12 @@ router.get("track", "/:trackId", loadTrack, async ctx => {
   const {
     state: { track },
   } = ctx;
-  ctx.body = track;
+  if (!track) {
+    ctx.status = 404;
+  } else {
+    ctx.status = 200;
+    ctx.body = track;
+  }
 });
 
 router.put("playTrack", "/:trackId/play", loadTrack, async ctx => {

@@ -1,7 +1,9 @@
+const btoa = require("btoa");
 const KoaRouter = require("koa-router");
 const tracksRouter = require("./tracks");
 
 const router = new KoaRouter();
+const BASE_URL = "https://jumping-grasshopper-t2.herokuapp.com";
 
 async function loadAlbum(ctx, next) {
   const {
@@ -38,18 +40,29 @@ router.post("createAlbum", "/", async ctx => {
   if (!artist) {
     ctx.status = 422;
   } else {
-    const album = await artist.getAlbums({ where: { name } });
-    if (album) {
+    const album = await artist.getAlbums({
+      where: { name },
+      limit: 1,
+    });
+    if (album.length) {
       ctx.status = 409;
+      ctx.body = album[0];
     } else {
       try {
         const { id: artistId } = artist;
         const id = btoa(`${name}:${artistId}`).slice(0, 22);
-
+        const albumBody = {
+          ...body,
+          id,
+          artist_id: artistId,
+          artist: `${BASE_URL}/artists/${artistId}`,
+          tracks: `${BASE_URL}/albums/${id}/tracks`,
+          self: `${BASE_URL}/albums/${id}`,
+        };
         ctx.status = 201;
-        ctx.body = await ctx.orm.Albums.create({ ...body, id });
+        ctx.body = await ctx.orm.Albums.create(albumBody);
       } catch (error) {
-        ctx.body = error;
+        ctx.status = 400;
       }
     }
   }
@@ -59,7 +72,12 @@ router.get("album", "/:albumId", loadAlbum, async ctx => {
   const {
     state: { album },
   } = ctx;
-  ctx.body = album;
+  if (!album) {
+    ctx.status = 404;
+  } else {
+    ctx.status = 200;
+    ctx.body = album;
+  }
 });
 
 router.delete("deleteAlbum", "/:albumId", loadAlbum, async ctx => {
