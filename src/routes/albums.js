@@ -45,7 +45,7 @@ router.post("createAlbum", "/", async ctx => {
     ctx.status = 422;
   } else {
     const album = await artist.getAlbums({
-      where: { name },
+      where: { name: name || null },
       limit: 1,
     });
     if (album.length) {

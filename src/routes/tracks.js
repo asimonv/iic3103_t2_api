@@ -44,7 +44,10 @@ router.post("createTrack", "/", async ctx => {
   if (!album) {
     ctx.status = 422;
   } else {
-    const track = await album.getTracks({ where: { name }, limit: 1 });
+    const track = await album.getTracks({
+      where: { name: name || null },
+      limit: 1,
+    });
     if (track.length) {
       ctx.body = track[0];
       ctx.status = 409;

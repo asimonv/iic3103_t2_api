@@ -35,13 +35,10 @@ router.get("artists", "/:artistId", loadArtist, async ctx => {
 
 router.post("createArtist", "/", async ctx => {
   const {
-    request: {
-      body: { name },
-      body,
-    },
+    request: { body: { name } = {}, body },
   } = ctx;
   const artist = await ctx.orm.Artists.findAll({
-    where: { name },
+    where: { name: name || null },
     limit: 1,
   });
 
