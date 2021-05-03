@@ -1,7 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
   const Artist = sequelize.define("Artists", {
+    id: { type: DataTypes.STRING, noUpdate: true, primaryKey: true },
     name: { type: DataTypes.STRING },
     age: { type: DataTypes.INTEGER },
+    albums: { type: DataTypes.STRING, noUpdate: true },
+    tracks: { type: DataTypes.STRING, noUpdate: true },
+    self: { type: DataTypes.STRING, noUpdate: true },
   });
 
   Artist.associate = models => {

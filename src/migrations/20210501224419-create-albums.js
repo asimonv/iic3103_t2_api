@@ -6,12 +6,10 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.STRING,
-        noUpdate: true,
       },
       artist_id: {
         allowNull: false,
         type: Sequelize.STRING,
-        noUpdate: true,
       },
       name: {
         allowNull: false,
@@ -24,17 +22,14 @@ module.exports = {
       artist: {
         allowNull: false,
         type: Sequelize.STRING,
-        noUpdate: true,
       },
       tracks: {
         allowNull: false,
         type: Sequelize.STRING,
-        noUpdate: true,
       },
       self: {
         allowNull: false,
         type: Sequelize.STRING,
-        noUpdate: true,
       },
       createdAt: {
         allowNull: false,

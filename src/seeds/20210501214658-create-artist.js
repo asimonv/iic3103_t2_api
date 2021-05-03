@@ -49,7 +49,7 @@ module.exports = {
             createdAt: new Date(),
             updatedAt: new Date(),
             album: `${BASE_URL}/albums/${album_id}`,
-            artist: `${BASE_URL}/artist/${artist_id}`,
+            artist: `${BASE_URL}/artists/${artist_id}`,
             self: `${BASE_URL}/tracks/${track_id}`,
           });
         }
