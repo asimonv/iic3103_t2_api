@@ -6,10 +6,12 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.STRING,
+        noUpdate: true,
       },
       album_id: {
         allowNull: false,
         type: Sequelize.STRING,
+        noUpdate: true,
       },
       name: {
         allowNull: false,
@@ -22,6 +24,22 @@ module.exports = {
       times_played: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
+        noUpdate: true,
+      },
+      artist: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        noUpdate: true,
+      },
+      album: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        noUpdate: true,
+      },
+      self: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        noUpdate: true,
       },
       createdAt: {
         allowNull: false,

@@ -5,6 +5,7 @@ module.exports = {
       id: {
         primaryKey: true,
         type: Sequelize.STRING,
+        noUpdate: true,
       },
       name: {
         type: Sequelize.STRING,
@@ -13,6 +14,21 @@ module.exports = {
       age: {
         allowNull: false,
         type: Sequelize.INTEGER,
+      },
+      albums: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        noUpdate: true,
+      },
+      tracks: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        noUpdate: true,
+      },
+      self: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        noUpdate: true,
       },
       createdAt: {
         allowNull: false,
