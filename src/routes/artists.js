@@ -35,30 +35,35 @@ router.get("artists", "/:artistId", loadArtist, async ctx => {
 
 router.post("createArtist", "/", async ctx => {
   const {
-    request: { body: { name } = {}, body },
+    request: { body: { name, age } = {}, body },
   } = ctx;
-  const artist = await ctx.orm.Artists.findAll({
-    where: { name: name || null },
-    limit: 1,
-  });
 
-  if (artist.length) {
-    ctx.status = 409;
-    ctx.body = artist[0];
+  if (typeof name !== "string" || typeof age !== "number" || age % 1 !== 0) {
+    ctx.status = 400;
   } else {
-    try {
-      const id = btoa(name).slice(0, 22);
-      const artistBody = {
-        ...body,
-        id,
-        albums: `${BASE_URL}/artists/${id}/albums`,
-        tracks: `${BASE_URL}/artists/${id}/tracks`,
-        self: `${BASE_URL}/artists/${id}`,
-      };
-      ctx.body = await ctx.orm.Artists.create(artistBody);
-      ctx.status = 201;
-    } catch (error) {
-      ctx.status = 400;
+    const artist = await ctx.orm.Artists.findAll({
+      where: { name: name || null },
+      limit: 1,
+    });
+
+    if (artist.length) {
+      ctx.status = 409;
+      ctx.body = artist[0];
+    } else {
+      try {
+        const id = btoa(name).slice(0, 22);
+        const artistBody = {
+          ...body,
+          id,
+          albums: `${BASE_URL}/artists/${id}/albums`,
+          tracks: `${BASE_URL}/artists/${id}/tracks`,
+          self: `${BASE_URL}/artists/${id}`,
+        };
+        ctx.body = await ctx.orm.Artists.create(artistBody);
+        ctx.status = 201;
+      } catch (error) {
+        ctx.status = 400;
+      }
     }
   }
 });

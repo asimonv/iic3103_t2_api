@@ -36,38 +36,46 @@ router.post("createTrack", "/", async ctx => {
   const {
     state: { album },
     request: {
-      body: { name },
+      body: { name, duration },
       body,
     },
   } = ctx;
 
-  if (!album) {
-    ctx.status = 422;
+  if (
+    typeof name !== "string" ||
+    typeof duration !== "number" ||
+    Number.isInteger(duration)
+  ) {
+    ctx.status = 400;
   } else {
-    const track = await album.getTracks({
-      where: { name: name || null },
-      limit: 1,
-    });
-    if (track.length) {
-      ctx.body = track[0];
-      ctx.status = 409;
+    if (!album) {
+      ctx.status = 422;
     } else {
-      try {
-        const { id: albumId, artist_id: artistId } = album;
-        const id = btoa(`${name}:${albumId}`).slice(0, 22);
-        const trackBody = {
-          ...body,
-          id,
-          album_id: albumId,
-          artist: `${BASE_URL}/artists/${artistId}`,
-          album: `${BASE_URL}/albums/${albumId}`,
-          self: `${BASE_URL}/tracks/${id}`,
-        };
+      const track = await album.getTracks({
+        where: { name: name || null },
+        limit: 1,
+      });
+      if (track.length) {
+        ctx.body = track[0];
+        ctx.status = 409;
+      } else {
+        try {
+          const { id: albumId, artist_id: artistId } = album;
+          const id = btoa(`${name}:${albumId}`).slice(0, 22);
+          const trackBody = {
+            ...body,
+            id,
+            album_id: albumId,
+            artist: `${BASE_URL}/artists/${artistId}`,
+            album: `${BASE_URL}/albums/${albumId}`,
+            self: `${BASE_URL}/tracks/${id}`,
+          };
 
-        ctx.status = 201;
-        ctx.body = await ctx.orm.Tracks.create(trackBody);
-      } catch (error) {
-        ctx.status = 400;
+          ctx.status = 201;
+          ctx.body = await ctx.orm.Tracks.create(trackBody);
+        } catch (error) {
+          ctx.status = 400;
+        }
       }
     }
   }
