@@ -40,7 +40,7 @@ router.post("createArtist", "/", async ctx => {
       body,
     },
   } = ctx;
-  const artist = ctx.orm.Artists.findAll({
+  const artist = await ctx.orm.Artists.findAll({
     where: { name },
     limit: 1,
   });
