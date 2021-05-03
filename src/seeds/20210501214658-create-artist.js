@@ -8,7 +8,7 @@ module.exports = {
     const artistsData = [];
     const albumsData = [];
     const tracksData = [];
-    for (let i = 0; i < 10; i += 1) {
+    for (let i = 0; i < 3; i += 1) {
       const name = `${faker.name.firstName()} ${faker.name.lastName()}`;
       const artist_id = btoa(name).slice(0, 22);
       artistsData.push({
@@ -22,7 +22,7 @@ module.exports = {
         self: `${BASE_URL}/artists/${artist_id}`,
       });
 
-      for (let j = 0; j < 3; j++) {
+      for (let j = 0; j < 2; j++) {
         const albumName = `${faker.vehicle.manufacturer()} ${faker.lorem.word()}`;
         const album_id = btoa(`${albumName}:${artist_id}`).slice(0, 22);
         albumsData.push({
@@ -37,7 +37,7 @@ module.exports = {
           self: `${BASE_URL}/albums/${album_id}`,
         });
 
-        for (let k = 0; k < 8; k++) {
+        for (let k = 0; k < 5; k++) {
           const r = Math.random().toString(36).substring(7);
           const trackName = `${r} - ${faker.lorem.sentence()}`;
           const track_id = btoa(`${trackName}:${album_id}`).slice(0, 22);
