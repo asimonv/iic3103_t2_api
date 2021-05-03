@@ -112,7 +112,7 @@ router.put("playAllAlbumTracks", "/play", async ctx => {
           where: { album_id: albumId },
         });
       }
-      ctx.state = 200;
+      ctx.status = 200;
     } catch (error) {
       ctx.body = error;
     }

@@ -90,7 +90,7 @@ router.put("playTrack", "/:trackId/play", loadTrack, async ctx => {
   } else {
     try {
       await track.increment("times_played");
-      ctx.state = 200;
+      ctx.status = 200;
     } catch (error) {
       ctx.body = error;
     }
@@ -99,20 +99,18 @@ router.put("playTrack", "/:trackId/play", loadTrack, async ctx => {
 
 router.put("playAlbumTracks", "/play", async ctx => {
   const {
-    state: { album: { id } = {}, album },
+    state: { album },
   } = ctx;
 
-  if (!album) {
-    ctx.status = 404;
-  } else {
-    try {
-      await ctx.orm.Tracks.increment("times_played", {
-        where: { album_id: id },
-      });
-      ctx.state = 200;
-    } catch (error) {
-      ctx.body = error;
+  if (album) {
+    const albumTracks = await album.getTracks();
+    for (let i = 0; i < albumTracks.length; i++) {
+      const track = albumTracks[i];
+      await track.increment("times_played");
     }
+    ctx.status = 200;
+  } else {
+    ctx.status = 404;
   }
 });
 
