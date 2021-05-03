@@ -9,7 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Albums.hasMany(models.Tracks, { foreignKey: "album_id" });
+      Albums.hasMany(models.Tracks, {
+        foreignKey: "album_id",
+        onDelete: "cascade",
+        hooks: true,
+      });
     }
   }
   Albums.init(

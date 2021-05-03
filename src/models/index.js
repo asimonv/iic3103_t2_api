@@ -13,8 +13,6 @@ const sequelizeConfig = config.use_env_variable
   ? process.env[config.use_env_variable]
   : config;
 
-console.warn(sequelizeConfig);
-
 const sequelize = new Sequelize(sequelizeConfig);
 
 fs.readdirSync(__dirname)

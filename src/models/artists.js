@@ -9,7 +9,11 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Artist.associate = models => {
-    Artist.hasMany(models.Albums, { foreignKey: "artist_id" });
+    Artist.hasMany(models.Albums, {
+      foreignKey: "artist_id",
+      onDelete: "cascade",
+      hooks: true,
+    });
   };
 
   // 🥴
